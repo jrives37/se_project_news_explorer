@@ -1,0 +1,47 @@
+.app {
+  min-height: 100vh;
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+.app__search-section {
+  background-color: #1a1b22;
+  color: white;
+  padding: 100px 24px 80px;
+  text-align: center;
+}
+
+.app__search-content {
+  max-width: 608px;
+  margin: 0 auto;
+}
+
+.app__title {
+  font-size: 60px;
+  line-height: 1.07;
+  font-weight: 400;
+  text-align: left;
+  margin: 0 0 32px;
+}
+
+.app__subtitle {
+  font-size: 18px;
+  line-height: 24px;
+  text-align: left;
+  margin: 0 0 64px;
+}
+
+@media (max-width: 600px) {
+  .app__search-section {
+    padding: 60px 16px 32px;
+  }
+
+  .app__title {
+    font-size: 36px;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
+
+  .app__subtitle {
+    margin-bottom: 40px;
+  }
+}

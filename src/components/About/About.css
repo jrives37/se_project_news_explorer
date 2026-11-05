@@ -1,0 +1,20 @@
+.about {
+  padding: 80px 40px;
+  background-color: white;
+}
+
+.about__content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about__title {
+  font-size: 40px;
+  margin-bottom: 24px;
+}
+
+.about__description {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}

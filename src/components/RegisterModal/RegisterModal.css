@@ -1,0 +1,90 @@
+.register-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.register-modal__container {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 430px;
+  padding: 34px 36px;
+  border-radius: 16px;
+  background-color: white;
+}
+
+.register-modal__close {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.register-modal__title {
+  margin: 0 0 24px;
+  font-size: 24px;
+}
+
+.register-modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-modal__label {
+  margin-bottom: 8px;
+  color: #2f71e5;
+  font-size: 12px;
+}
+
+.register-modal__input {
+  margin-bottom: 24px;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+}
+
+.register-modal__submit {
+  height: 64px;
+  border: none;
+  border-radius: 100px;
+  background-color: #2f71e5;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.register-modal__switch {
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+.register-modal__switch button {
+  border: none;
+  background: transparent;
+  color: #2f71e5;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .register-modal__container {
+    max-width: 100%;
+    padding: 24px 16px;
+  }
+
+  .register-modal__close {
+    top: 12px;
+    right: 16px;
+    color: #1a1b22;
+  }
+}

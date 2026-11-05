@@ -1,0 +1,33 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 40px;
+  background-color: white;
+}
+
+.footer__copyright {
+  color: #b6bcbf;
+  font-size: 16px;
+}
+
+.footer__navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.footer__navigation a {
+  color: #1a1b22;
+  text-decoration: none;
+}
+
+.footer__navigation a:hover {
+  color: #2f71e5;
+}
+
+@media (max-width: 600px) {
+  .footer {
+    flex-direction: column-reverse;
+    gap: 24px;
+  }
+}
