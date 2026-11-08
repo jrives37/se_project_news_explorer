@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./LoginModal.css";
 
-function LoginModal({ isOpen, onClose, onSignUpClick }) {
+function LoginModal({ isOpen, onClose, onSignUpClick, onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,10 +11,7 @@ function LoginModal({ isOpen, onClose, onSignUpClick }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log("Login submitted:", { email });
-
-    // Backend authentication will be added later.
+    onLogin();
   };
 
   return (

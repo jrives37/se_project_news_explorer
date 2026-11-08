@@ -52,3 +52,9 @@
     height: 56px;
   }
 }
+.search-form__error {
+  color: #ff4d4f;
+  font-size: 14px;
+  margin-top: 12px;
+  text-align: left;
+}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./Header.css";
 
-function Header({ onSignInClick }) {
+function Header({ onSignInClick, loggedIn, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -58,16 +58,23 @@ function Header({ onSignInClick }) {
             Saved articles
           </NavLink>
 
-          <button
-            className="header__signin"
-            type="button"
-            onClick={() => {
-              closeMenu();
-              onSignInClick();
-            }}
-          >
-            Sign in
-          </button>
+          {loggedIn ? (
+            <button
+              className="header__signin-button"
+              type="button"
+              onClick={onLogout}
+            >
+              Log out
+            </button>
+          ) : (
+            <button
+              className="header__signin-button"
+              type="button"
+              onClick={onSignInClick}
+            >
+              Sign in
+            </button>
+          )}
         </nav>
       </div>
     </header>
