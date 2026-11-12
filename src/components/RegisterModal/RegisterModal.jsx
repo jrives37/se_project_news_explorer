@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./RegisterModal.css";
 
-function RegisterModal({ isOpen, onClose, onSignInClick }) {
+function RegisterModal({ isOpen, onClose, onSignInClick, onRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -12,7 +12,7 @@ function RegisterModal({ isOpen, onClose, onSignInClick }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Registration submitted:", { email, username });
+    onRegister();
   };
 
   return (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { getNews } from "../../utils/newsApi";
 
 import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm";
@@ -14,19 +15,49 @@ import "./App.css";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return localStorage.getItem("newsExplorerToken") === "mock-token";
+  });
+  const [savedArticles, setSavedArticles] = useState([]);
+  const [searchId, setSearchId] = useState(0);
 
+  // Open login modal
   const handleSignInClick = () => {
     setActiveModal("login");
   };
 
+  // Open registration modal
   const handleSignUpClick = () => {
     setActiveModal("register");
   };
 
+  // Close modal
   const closeModal = () => {
     setActiveModal("");
   };
 
+  const handleLogin = () => {
+    localStorage.setItem("newsExplorerToken", "mock-token");
+    setLoggedIn(true);
+    setActiveModal("");
+  };
+  const handleRegister = () => {
+    localStorage.setItem("newsExplorerToken", "mock-token");
+    setLoggedIn(true);
+    setActiveModal("");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("newsExplorerToken");
+    setLoggedIn(false);
+    setSavedArticles([]);
+  };
+
+  // Close modals when Escape is pressed
   useEffect(() => {
     if (!activeModal) {
       return;
@@ -45,9 +76,56 @@ function App() {
     };
   }, [activeModal]);
 
+  const handleSearch = (keyword) => {
+    setSearchId((previousId) => previousId + 1);
+    setIsLoading(true);
+    setSearchError("");
+    setHasSearched(true);
+    setArticles([]);
+
+    getNews(keyword)
+      .then((newsArticles) => {
+        setArticles(newsArticles);
+      })
+      .catch((err) => {
+        console.error(err);
+        setSearchError(
+          "Sorry, something went wrong during the request. Please try again later.",
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  // Save or unsave an article
+  const handleSaveArticle = (article) => {
+    if (!loggedIn) {
+      return;
+    }
+
+    setSavedArticles((previousArticles) => {
+      const isAlreadySaved = previousArticles.some(
+        (savedArticle) => savedArticle.url === article.url,
+      );
+
+      if (isAlreadySaved) {
+        return previousArticles.filter(
+          (savedArticle) => savedArticle.url !== article.url,
+        );
+      }
+
+      return [...previousArticles, article];
+    });
+  };
+
   return (
     <div className="app">
-      <Header onSignInClick={handleSignInClick} />
+      <Header
+        onSignInClick={handleSignInClick}
+        loggedIn={loggedIn}
+        onLogout={handleLogout}
+      />
 
       <Routes>
         <Route
@@ -63,17 +141,36 @@ function App() {
                     like.
                   </p>
 
-                  <SearchForm />
+                  <SearchForm onSearch={handleSearch} />
                 </div>
               </section>
 
-              <Main />
+              <Main
+                key={searchId}
+                articles={articles}
+                isLoading={isLoading}
+                searchError={searchError}
+                hasSearched={hasSearched}
+                loggedIn={loggedIn}
+                savedArticles={savedArticles}
+                onSaveArticle={handleSaveArticle}
+              />
+
               <About />
             </main>
           }
         />
 
-        <Route path="/saved-news" element={<SavedNews />} />
+        <Route
+          path="/saved-news"
+          element={
+            <SavedNews
+              savedArticles={savedArticles}
+              loggedIn={loggedIn}
+              onSaveArticle={handleSaveArticle}
+            />
+          }
+        />
       </Routes>
 
       <Footer />
@@ -82,12 +179,14 @@ function App() {
         isOpen={activeModal === "login"}
         onClose={closeModal}
         onSignUpClick={handleSignUpClick}
+        onLogin={handleLogin}
       />
 
       <RegisterModal
         isOpen={activeModal === "register"}
         onClose={closeModal}
         onSignInClick={handleSignInClick}
+        onRegister={handleRegister}
       />
     </div>
   );
