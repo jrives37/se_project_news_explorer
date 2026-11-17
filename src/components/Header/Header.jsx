@@ -7,7 +7,19 @@ function Header({ onSignInClick, loggedIn, onLogout }) {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const handleSignIn = () => {
+    closeMenu();
+    onSignInClick();
+  };
+
+  const handleLogout = () => {
+    closeMenu();
+    onLogout();
+  };
 
   return (
     <header
@@ -48,21 +60,23 @@ function Header({ onSignInClick, loggedIn, onLogout }) {
             Home
           </NavLink>
 
-          <NavLink
-            to="/saved-news"
-            className={({ isActive }) =>
-              `header__link ${isActive ? "header__link_active" : ""}`
-            }
-            onClick={closeMenu}
-          >
-            Saved articles
-          </NavLink>
+          {loggedIn && (
+            <NavLink
+              to="/saved-news"
+              className={({ isActive }) =>
+                `header__link ${isActive ? "header__link_active" : ""}`
+              }
+              onClick={closeMenu}
+            >
+              Saved articles
+            </NavLink>
+          )}
 
           {loggedIn ? (
             <button
               className="header__signin-button"
               type="button"
-              onClick={onLogout}
+              onClick={handleLogout}
             >
               Log out
             </button>
@@ -70,7 +84,7 @@ function Header({ onSignInClick, loggedIn, onLogout }) {
             <button
               className="header__signin-button"
               type="button"
-              onClick={onSignInClick}
+              onClick={handleSignIn}
             >
               Sign in
             </button>

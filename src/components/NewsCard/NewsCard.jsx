@@ -1,6 +1,12 @@
 import "./NewsCard.css";
 
-function NewsCard({ article, loggedIn, isSaved, onSaveArticle }) {
+function NewsCard({
+  article,
+  loggedIn,
+  isSaved,
+  onSaveArticle,
+  isSavedPage = false,
+}) {
   const handleSaveClick = () => {
     if (loggedIn) {
       onSaveArticle(article);
@@ -16,32 +22,62 @@ function NewsCard({ article, loggedIn, isSaved, onSaveArticle }) {
           alt={article.title}
         />
 
+        {isSavedPage && article.keyword && (
+          <span className="news-card__keyword">{article.keyword}</span>
+        )}
+
         <div className="news-card__save-container">
-          {!loggedIn && (
+          {!loggedIn && !isSavedPage && (
             <span className="news-card__tooltip">Sign in to save articles</span>
           )}
 
           <button
             className={`news-card__save-button ${
-              isSaved ? "news-card__save-button_saved" : ""
+              isSaved && !isSavedPage ? "news-card__save-button_saved" : ""
             }`}
             type="button"
             onClick={handleSaveClick}
             disabled={!loggedIn}
-            aria-label={isSaved ? "Unsave article" : "Save article"}
+            aria-label={
+              isSavedPage
+                ? "Remove saved article"
+                : isSaved
+                  ? "Unsave article"
+                  : "Save article"
+            }
             aria-pressed={Boolean(isSaved)}
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill={isSaved ? "#2f71e5" : "none"}
-              stroke={isSaved ? "#2f71e5" : "#1a1b22"}
-              strokeWidth="2"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M6 3H18V21L12 17L6 21V3Z" />
-            </svg>
+            {isSavedPage ? (
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 7H20" />
+                <path d="M10 4H14" />
+                <path d="M6 7L7 20H17L18 7" />
+                <path d="M10 11V16" />
+                <path d="M14 11V16" />
+              </svg>
+            ) : (
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={isSaved ? "#2f71e5" : "none"}
+                stroke={isSaved ? "#2f71e5" : "#1a1b22"}
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M6 3H18V21L12 17L6 21V3Z" />
+              </svg>
+            )}
           </button>
         </div>
       </div>

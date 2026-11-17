@@ -19,23 +19,22 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchError, setSearchError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+
   const [loggedIn, setLoggedIn] = useState(() => {
     return localStorage.getItem("newsExplorerToken") === "mock-token";
   });
-  const [savedArticles, setSavedArticles] = useState([]);
-  const [searchId, setSearchId] = useState(0);
 
-  // Open login modal
+  const [savedArticles, setSavedArticles] = useState([]);
+  const [currentKeyword, setCurrentKeyword] = useState("");
+  const [searchId, setSearchId] = useState(0);
   const handleSignInClick = () => {
     setActiveModal("login");
   };
 
-  // Open registration modal
   const handleSignUpClick = () => {
     setActiveModal("register");
   };
 
-  // Close modal
   const closeModal = () => {
     setActiveModal("");
   };
@@ -43,12 +42,13 @@ function App() {
   const handleLogin = () => {
     localStorage.setItem("newsExplorerToken", "mock-token");
     setLoggedIn(true);
-    setActiveModal("");
+    closeModal();
   };
+
   const handleRegister = () => {
     localStorage.setItem("newsExplorerToken", "mock-token");
     setLoggedIn(true);
-    setActiveModal("");
+    closeModal();
   };
 
   const handleLogout = () => {
@@ -57,7 +57,6 @@ function App() {
     setSavedArticles([]);
   };
 
-  // Close modals when Escape is pressed
   useEffect(() => {
     if (!activeModal) {
       return;
@@ -65,7 +64,7 @@ function App() {
 
     const handleEscape = (e) => {
       if (e.key === "Escape") {
-        closeModal();
+        setActiveModal("");
       }
     };
 
@@ -77,6 +76,7 @@ function App() {
   }, [activeModal]);
 
   const handleSearch = (keyword) => {
+    setCurrentKeyword(keyword);
     setSearchId((previousId) => previousId + 1);
     setIsLoading(true);
     setSearchError("");
@@ -98,7 +98,6 @@ function App() {
       });
   };
 
-  // Save or unsave an article
   const handleSaveArticle = (article) => {
     if (!loggedIn) {
       return;
@@ -115,35 +114,45 @@ function App() {
         );
       }
 
-      return [...previousArticles, article];
+      return [
+        ...previousArticles,
+        {
+          ...article,
+          keyword: currentKeyword,
+        },
+      ];
     });
   };
 
   return (
     <div className="app">
-      <Header
-        onSignInClick={handleSignInClick}
-        loggedIn={loggedIn}
-        onLogout={handleLogout}
-      />
-
       <Routes>
         <Route
           path="/"
           element={
             <main>
-              <section className="app__search-section">
-                <div className="app__search-content">
-                  <h1 className="app__title">What's going on in the world?</h1>
+              <div className="app__hero">
+                <Header
+                  onSignInClick={handleSignInClick}
+                  loggedIn={loggedIn}
+                  onLogout={handleLogout}
+                />
 
-                  <p className="app__subtitle">
-                    Find the latest news on any topic and save articles you
-                    like.
-                  </p>
+                <section className="app__search-section">
+                  <div className="app__search-content">
+                    <h1 className="app__title">
+                      What's going on in the world?
+                    </h1>
 
-                  <SearchForm onSearch={handleSearch} />
-                </div>
-              </section>
+                    <p className="app__subtitle">
+                      Find the latest news on any topic and save articles you
+                      like.
+                    </p>
+
+                    <SearchForm onSearch={handleSearch} />
+                  </div>
+                </section>
+              </div>
 
               <Main
                 key={searchId}
@@ -164,11 +173,19 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            <SavedNews
-              savedArticles={savedArticles}
-              loggedIn={loggedIn}
-              onSaveArticle={handleSaveArticle}
-            />
+            <>
+              <Header
+                onSignInClick={handleSignInClick}
+                loggedIn={loggedIn}
+                onLogout={handleLogout}
+              />
+
+              <SavedNews
+                savedArticles={savedArticles}
+                loggedIn={loggedIn}
+                onSaveArticle={handleSaveArticle}
+              />
+            </>
           }
         />
       </Routes>
