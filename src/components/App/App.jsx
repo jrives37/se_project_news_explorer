@@ -10,6 +10,7 @@ import Footer from "../Footer/Footer";
 import SavedNews from "../SavedNews/SavedNews";
 import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import "./App.css";
 
@@ -173,19 +174,20 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            <>
-              <Header
-                onSignInClick={handleSignInClick}
-                loggedIn={loggedIn}
-                onLogout={handleLogout}
-              />
-
-              <SavedNews
-                savedArticles={savedArticles}
-                loggedIn={loggedIn}
-                onSaveArticle={handleSaveArticle}
-              />
-            </>
+            <ProtectedRoute loggedIn={loggedIn}>
+              <>
+                <Header
+                  onSignInClick={handleSignInClick}
+                  loggedIn={loggedIn}
+                  onLogout={handleLogout}
+                />
+                <SavedNews
+                  savedArticles={savedArticles}
+                  onSaveArticle={handleSaveArticle}
+                  loggedIn={loggedIn}
+                />
+              </>
+            </ProtectedRoute>
           }
         />
       </Routes>

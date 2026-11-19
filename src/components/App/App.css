@@ -8,7 +8,7 @@
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
     url("../../assets/hero.png");
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   color: #fff;
@@ -26,15 +26,20 @@
 .app__title {
   max-width: 608px;
   margin: 0 0 32px;
+  color: #fff;
+  font-family: "Roboto Slab", Georgia, serif;
   font-size: 60px;
-  line-height: 1.07;
   font-weight: 400;
+  line-height: 1.07;
   text-align: left;
 }
 
 .app__subtitle {
   margin: 0 0 64px;
+  color: #fff;
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
+  font-weight: 400;
   line-height: 24px;
   text-align: left;
 }
@@ -60,15 +65,12 @@
   }
 
   .app__title {
+    margin-bottom: 16px;
     font-size: 36px;
     line-height: 40px;
-    margin-bottom: 16px;
   }
 
   .app__subtitle {
     margin-bottom: 40px;
   }
-}
-.app__hero {
-  background-position: center center;
 }
