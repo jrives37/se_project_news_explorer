@@ -1,8 +1,16 @@
 import "./NewsCard.css";
 
-function NewsCard({ article }) {
+function NewsCard({
+  article,
+  loggedIn,
+  isSaved,
+  onSaveArticle,
+  isSavedPage = false,
+}) {
   const handleSaveClick = () => {
-    console.log("Save article:", article.title);
+    if (loggedIn) {
+      onSaveArticle(article);
+    }
   };
 
   return (
@@ -14,16 +22,62 @@ function NewsCard({ article }) {
           alt={article.title}
         />
 
+        {isSavedPage && article.keyword && (
+          <span className="news-card__keyword">{article.keyword}</span>
+        )}
+
         <div className="news-card__save-container">
-          <span className="news-card__tooltip">Sign in to save articles</span>
+          {!loggedIn && !isSavedPage && (
+            <span className="news-card__tooltip">Sign in to save articles</span>
+          )}
 
           <button
-            className="news-card__save-button"
+            className={`news-card__save-button ${
+              isSaved && !isSavedPage ? "news-card__save-button_saved" : ""
+            }`}
             type="button"
             onClick={handleSaveClick}
-            aria-label="Save article"
+            disabled={!loggedIn}
+            aria-label={
+              isSavedPage
+                ? "Remove saved article"
+                : isSaved
+                  ? "Unsave article"
+                  : "Save article"
+            }
+            aria-pressed={Boolean(isSaved)}
           >
-            ♧
+            {isSavedPage ? (
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 7H20" />
+                <path d="M10 4H14" />
+                <path d="M6 7L7 20H17L18 7" />
+                <path d="M10 11V16" />
+                <path d="M14 11V16" />
+              </svg>
+            ) : (
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={isSaved ? "#2f71e5" : "none"}
+                stroke={isSaved ? "#2f71e5" : "#1a1b22"}
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M6 3H18V21L12 17L6 21V3Z" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
@@ -37,11 +91,17 @@ function NewsCard({ article }) {
           })}
         </p>
 
-        <h3 className="news-card__title">{article.title}</h3>
+        <h3 className="news-card__title">
+          <a href={article.url} target="_blank" rel="noopener noreferrer">
+            {article.title}
+          </a>
+        </h3>
 
         <p className="news-card__description">{article.description}</p>
 
-        <p className="news-card__source">{article.source.name}</p>
+        <p className="news-card__source">
+          {article.source?.name || "Unknown source"}
+        </p>
       </div>
     </article>
   );

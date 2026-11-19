@@ -2,12 +2,24 @@ import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./Header.css";
 
-function Header({ onSignInClick }) {
+function Header({ onSignInClick, loggedIn, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const handleSignIn = () => {
+    closeMenu();
+    onSignInClick();
+  };
+
+  const handleLogout = () => {
+    closeMenu();
+    onLogout();
+  };
 
   return (
     <header
@@ -48,26 +60,35 @@ function Header({ onSignInClick }) {
             Home
           </NavLink>
 
-          <NavLink
-            to="/saved-news"
-            className={({ isActive }) =>
-              `header__link ${isActive ? "header__link_active" : ""}`
-            }
-            onClick={closeMenu}
-          >
-            Saved articles
-          </NavLink>
+          {loggedIn && (
+            <NavLink
+              to="/saved-news"
+              className={({ isActive }) =>
+                `header__link ${isActive ? "header__link_active" : ""}`
+              }
+              onClick={closeMenu}
+            >
+              Saved articles
+            </NavLink>
+          )}
 
-          <button
-            className="header__signin"
-            type="button"
-            onClick={() => {
-              closeMenu();
-              onSignInClick();
-            }}
-          >
-            Sign in
-          </button>
+          {loggedIn ? (
+            <button
+              className="header__signin-button"
+              type="button"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          ) : (
+            <button
+              className="header__signin-button"
+              type="button"
+              onClick={handleSignIn}
+            >
+              Sign in
+            </button>
+          )}
         </nav>
       </div>
     </header>

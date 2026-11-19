@@ -3,11 +3,19 @@
   font-family: "Roboto", Arial, sans-serif;
 }
 
-.app__search-section {
+.app__hero {
   background-color: #1a1b22;
-  color: white;
-  padding: 100px 24px 80px;
-  text-align: center;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url("../../assets/hero.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+}
+
+.app__search-section {
+  padding: 80px 24px 96px;
 }
 
 .app__search-content {
@@ -16,29 +24,50 @@
 }
 
 .app__title {
-  font-size: 60px;
-  line-height: 1.07;
-  font-weight: 400;
-  text-align: left;
+  max-width: 608px;
   margin: 0 0 32px;
+  color: #fff;
+  font-family: "Roboto Slab", Georgia, serif;
+  font-size: 60px;
+  font-weight: 400;
+  line-height: 1.07;
+  text-align: left;
 }
 
 .app__subtitle {
+  margin: 0 0 64px;
+  color: #fff;
+  font-family: "Roboto", Arial, sans-serif;
   font-size: 18px;
+  font-weight: 400;
   line-height: 24px;
   text-align: left;
-  margin: 0 0 64px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .app__search-section {
-    padding: 60px 16px 32px;
+    padding: 64px 24px 80px;
   }
 
   .app__title {
     font-size: 36px;
     line-height: 40px;
+  }
+
+  .app__subtitle {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app__search-section {
+    padding: 56px 16px 32px;
+  }
+
+  .app__title {
     margin-bottom: 16px;
+    font-size: 36px;
+    line-height: 40px;
   }
 
   .app__subtitle {
